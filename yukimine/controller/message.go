@@ -5,9 +5,9 @@ import (
 	"errors"
 	"net/http"
 
+	"github.com/gin-gonic/gin"
 	"github.com/yuk-vg/vg-1day-2017-08-09/yukimine/httputil"
 	"github.com/yuk-vg/vg-1day-2017-08-09/yukimine/model"
-	"github.com/gin-gonic/gin"
 )
 
 // Message is controller for requests to messages
@@ -75,6 +75,14 @@ func (m *Message) Create(c *gin.Context) {
 
 	// 1-2. ユーザー名を追加しよう
 	// できる人は、ユーザー名が空だったら`anonymous`等適当なユーザー名で投稿するようにしてみよう
+	if msg.Username == "" {
+		msg.Username = "anonymous"
+	}
+	if msg.Body == "" {
+		resp := httputil.NewErrorResponse(errors.New("body is empty"))
+		c.JSON(http.StatusBadRequest, resp)
+		return
+	}
 
 	inserted, err := msg.Insert(m.DB)
 	if err != nil {
