@@ -23,7 +23,6 @@ func UserAll(db *sql.DB) ([]*User, error) {
 	var us []*User
 	for rows.Next() {
 		u := &User{}
-		// 1-1. ユーザー名を表示しよう
 		if err := rows.Scan(&u.ID, &u.Name, &u.Age); err != nil {
 			return nil, err
 		}
