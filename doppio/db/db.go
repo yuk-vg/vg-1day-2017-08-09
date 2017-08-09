@@ -6,7 +6,6 @@ import (
 	"io"
 	"io/ioutil"
 	"os"
-
 	"gopkg.in/yaml.v2"
 )
 
