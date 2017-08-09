@@ -9,7 +9,7 @@ type Message struct {
 	ID   int64  `json:"id"`
 	Body string `json:"body"`
 	// 1-1. ユーザー名を表示しよう
-    Username string `json:"username"`
+	Username string `json:"username"`
 }
 
 // MessagesAll は全てのメッセージを返します
@@ -26,7 +26,7 @@ func MessagesAll(db *sql.DB) ([]*Message, error) {
 	for rows.Next() {
 		m := &Message{}
 		// 1-1. ユーザー名を表示しよう
-		if err := rows.Scan(&m.ID, &m.Body , &m.Username); err != nil {
+		if err := rows.Scan(&m.ID, &m.Body, &m.Username); err != nil {
 			return nil, err
 		}
 		ms = append(ms, m)
@@ -63,10 +63,10 @@ func (m *Message) Insert(db *sql.DB) (*Message, error) {
 	}
 
 	return &Message{
-        ID:       id,
-        Body:     m.Body,
+		ID:   id,
+		Body: m.Body,
 		// 1-2. ユーザー名を追加しよう
-        Username: m.Username,
+		Username: m.Username,
 	}, nil
 }
 
@@ -79,21 +79,19 @@ func (m *Message) Update(db *sql.DB) (*Message, error) {
 	}
 
 	return &Message{
-        ID:       m.ID,
-        Body:     m.Body,
-        Username: m.Username,
+		ID:       m.ID,
+		Body:     m.Body,
+		Username: m.Username,
 	}, nil
 }
 
-
-
 // 1-4. メッセージを削除しよう
 // ...
-func (m *Message) Delete(db *sql.DB) (error) {
+func (m *Message) Delete(db *sql.DB) error {
 	_, err := db.Exec(`delete from message where id=?`, m.ID)
 	if err != nil {
 		return err
 	}
-    return nil
+	return nil
 
 }
