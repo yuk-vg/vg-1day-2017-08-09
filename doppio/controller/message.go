@@ -110,14 +110,13 @@ func (m *Message) UpdateByID(c *gin.Context) {
 		return
 	}
 
-	updated, err := msg.Update(m.DB)
+	_, err := msg.Update(m.DB)
 	if err != nil {
 		resp := httputil.NewErrorResponse(err)
 		c.JSON(http.StatusInternalServerError, resp)
 		return
 	}
 	c.JSON(http.StatusCreated, gin.H{
-		"result": updated,
 		"error":  nil,
 	})
 }
