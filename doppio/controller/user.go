@@ -3,10 +3,10 @@ package controller
 import (
 	"database/sql"
 	//"errors"
-	"net/http"
+	"github.com/gin-gonic/gin"
 	"github.com/yuk-vg/vg-1day-2017-08-09/doppio/httputil"
 	"github.com/yuk-vg/vg-1day-2017-08-09/doppio/model"
-	"github.com/gin-gonic/gin"
+	"net/http"
 )
 
 type User struct {

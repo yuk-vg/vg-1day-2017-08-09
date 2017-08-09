@@ -56,7 +56,7 @@ func (s *Server) Init(dbconf, env string) error {
 
 	// tutorial. 自己紹介を追加する
 	// ...
-    s.Engine.GET("/doppio", func(c *gin.Context) {
+	s.Engine.GET("/doppio", func(c *gin.Context) {
 		c.HTML(http.StatusOK, "doppio.html", gin.H{})
 	})
 
@@ -73,13 +73,12 @@ func (s *Server) Init(dbconf, env string) error {
 	api.POST("/messages", mctr.Create)
 	api.PUT("/messages/:id", mctr.UpdateByID)
 	api.DELETE("/messages/:id", mctr.DeleteByID)
-    
-    usrStream := make(chan *model.User)
-    uctr := &controller.User{DB: db, Stream: usrStream}
-    api.GET("/users", uctr.All)
-    api.GET("/users/:id", uctr.GetByID)
-    
-    
+
+	usrStream := make(chan *model.User)
+	uctr := &controller.User{DB: db, Stream: usrStream}
+	api.GET("/users", uctr.All)
+	api.GET("/users/:id", uctr.GetByID)
+
 	// bot
 	mc := bot.NewMulticaster(msgStream)
 	s.multicaster = mc

@@ -117,7 +117,7 @@ func (m *Message) UpdateByID(c *gin.Context) {
 		return
 	}
 	c.JSON(http.StatusCreated, gin.H{
-		"error":  nil,
+		"error": nil,
 	})
 }
 
