@@ -81,4 +81,10 @@ func (m *Message) EditMessageByID(db *sql.DB, id string) (*Message, error){
 }
 
 // 1-4. メッセージを削除しよう
-// ...
+func DeleteMessageByID(db  *sql.DB, id string)(error){
+	_, err := db.Exec(`delete from message where id = ?`, id)
+	if err != nil{
+		return err
+	}
+	return nil
+}
