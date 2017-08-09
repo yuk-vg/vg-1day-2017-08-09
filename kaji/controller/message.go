@@ -117,6 +117,7 @@ func (m *Message) UpdateByID(c *gin.Context) {
 // DeleteByID は...
 func (m *Message) DeleteByID(c *gin.Context) {
 	// 1-4. メッセージを削除しよう
-	// ...
+	_ = model.DeleteMessageByID(m.DB, c.Param("id"))
+
 	c.JSON(http.StatusOK, gin.H{})
 }
