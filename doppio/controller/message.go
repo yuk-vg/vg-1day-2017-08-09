@@ -79,6 +79,11 @@ func (m *Message) Create(c *gin.Context) {
     if msg.Username == ""{
         msg.Username = "anonymous"
     }
+    if msg.Body == ""{
+        resp := httputil.NewErrorResponse(errors.New("body is empty!"))
+		c.JSON(http.StatusBadRequest, resp)
+		return
+    }
 	inserted, err := msg.Insert(m.DB)
 	if err != nil {
 		resp := httputil.NewErrorResponse(err)
