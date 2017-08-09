@@ -51,13 +51,14 @@ func (s *Server) Init(dbconf, env string) error {
 	s.Engine.GET("/", func(c *gin.Context) {
 		c.HTML(http.StatusOK, "index.html", gin.H{})
 	})
-	s.Engine.GET("/doppio", func(c *gin.Context) {
-		c.HTML(http.StatusOK, "doppio.html", gin.H{})
-	})
+
 	s.Engine.Static("/assets", "./assets")
 
 	// tutorial. 自己紹介を追加する
 	// ...
+	s.Engine.GET("/doppio", func(c *gin.Context) {
+		c.HTML(http.StatusOK, "doppio.html", gin.H{})
+	})
 
 	// api
 	api := s.Engine.Group("/api")
@@ -72,6 +73,11 @@ func (s *Server) Init(dbconf, env string) error {
 	api.POST("/messages", mctr.Create)
 	api.PUT("/messages/:id", mctr.UpdateByID)
 	api.DELETE("/messages/:id", mctr.DeleteByID)
+
+	usrStream := make(chan *model.User)
+	uctr := &controller.User{DB: db, Stream: usrStream}
+	api.GET("/users", uctr.All)
+	api.GET("/users/:id", uctr.GetByID)
 
 	// bot
 	mc := bot.NewMulticaster(msgStream)
