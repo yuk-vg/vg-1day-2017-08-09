@@ -8,12 +8,12 @@ import (
 	"log"
 	"net/http"
 
+	"github.com/gin-gonic/gin"
+	_ "github.com/mattn/go-sqlite3"
 	"github.com/yuk-vg/vg-1day-2017-08-09/doppio/bot"
 	"github.com/yuk-vg/vg-1day-2017-08-09/doppio/controller"
 	"github.com/yuk-vg/vg-1day-2017-08-09/doppio/db"
 	"github.com/yuk-vg/vg-1day-2017-08-09/doppio/model"
-	"github.com/gin-gonic/gin"
-	_ "github.com/mattn/go-sqlite3"
 )
 
 // Server はAPIサーバーが実装された構造体です
@@ -51,7 +51,7 @@ func (s *Server) Init(dbconf, env string) error {
 	s.Engine.GET("/", func(c *gin.Context) {
 		c.HTML(http.StatusOK, "index.html", gin.H{})
 	})
-    s.Engine.GET("/doppio", func(c *gin.Context) {
+	s.Engine.GET("/doppio", func(c *gin.Context) {
 		c.HTML(http.StatusOK, "doppio.html", gin.H{})
 	})
 	s.Engine.Static("/assets", "./assets")

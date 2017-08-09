@@ -3,11 +3,11 @@ package controller
 import (
 	"database/sql"
 	"errors"
-	"net/http"
-
+	"github.com/gin-gonic/gin"
 	"github.com/yuk-vg/vg-1day-2017-08-09/doppio/httputil"
 	"github.com/yuk-vg/vg-1day-2017-08-09/doppio/model"
-	"github.com/gin-gonic/gin"
+	"net/http"
+	"strconv"
 )
 
 // Message is controller for requests to messages
@@ -96,12 +96,46 @@ func (m *Message) Create(c *gin.Context) {
 func (m *Message) UpdateByID(c *gin.Context) {
 	// 1-3. メッセージを編集しよう
 	// ...
-	c.JSON(http.StatusCreated, gin.H{})
+	var msg model.Message
+
+	if c.Request.ContentLength == 0 {
+		resp := httputil.NewErrorResponse(errors.New("body is missing"))
+		c.JSON(http.StatusBadRequest, resp)
+		return
+	}
+
+	if err := c.BindJSON(&msg); err != nil {
+		resp := httputil.NewErrorResponse(err)
+		c.JSON(http.StatusInternalServerError, resp)
+		return
+	}
+
+	_, err := msg.Update(m.DB)
+	if err != nil {
+		resp := httputil.NewErrorResponse(err)
+		c.JSON(http.StatusInternalServerError, resp)
+		return
+	}
+	c.JSON(http.StatusCreated, gin.H{
+		"error":  nil,
+	})
 }
 
 // DeleteByID は...
 func (m *Message) DeleteByID(c *gin.Context) {
 	// 1-4. メッセージを削除しよう
 	// ...
-	c.JSON(http.StatusOK, gin.H{})
+	var msg model.Message
+	msg.ID, _ = strconv.ParseInt(c.Param("id"), 10, 64)
+
+	err := msg.Delete(m.DB)
+	if err != nil {
+		resp := httputil.NewErrorResponse(err)
+		c.JSON(http.StatusInternalServerError, resp)
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{
+		"error": nil,
+	})
 }
