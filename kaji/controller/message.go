@@ -92,10 +92,25 @@ func (m *Message) Create(c *gin.Context) {
 	})
 }
 
-// UpdateByID は...
+// UpdateByID はIDからメッセージを編集します
 func (m *Message) UpdateByID(c *gin.Context) {
 	// 1-3. メッセージを編集しよう
-	// ...
+	var msg model.Message
+
+	if c.Request.ContentLength == 0 {
+		resp := httputil.NewErrorResponse(errors.New("body is missing"))
+		c.JSON(http.StatusBadRequest, resp)
+		return
+	}
+
+	if err := c.BindJSON(&msg); err != nil {
+		resp := httputil.NewErrorResponse(err)
+		c.JSON(http.StatusInternalServerError, resp)
+		return
+	}
+
+	_, _ = msg.EditMessageByID(m.DB, c.Param("id"))
+
 	c.JSON(http.StatusCreated, gin.H{})
 }
 
