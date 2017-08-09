@@ -78,6 +78,7 @@ func (s *Server) Init(dbconf, env string) error {
     api.GET("/users", uctr.All)
     api.GET("/users/:id", uctr.GetByID)
     
+    
 	// bot
 	mc := bot.NewMulticaster(msgStream)
 	s.multicaster = mc
